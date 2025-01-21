@@ -3,7 +3,12 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
+      - main
+    paths:
+      - 'src/**'
+      - 'stories/**'
+      - '.storybook/**'
+      - 'package.json'
 
 # Add permissions block
 permissions:
@@ -19,31 +24,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'  # Specify the Node.js version you are using
-
-      - name: Install dependencies
-        run: npm install
+      - uses: actions/checkout@v4
 
       - name: Build Storybook
         run: npm run build-storybook
 
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: './storybook-static'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v3
 
       - name: Set page URL
         run: echo "page_url=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" >> $GITHUB_ENV

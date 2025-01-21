@@ -10,7 +10,6 @@ on:
       - '.storybook/**'
       - 'package.json'
 
-# Add permissions block
 permissions:
   contents: read
   pages: write
